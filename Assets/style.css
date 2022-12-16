@@ -1,0 +1,13 @@
+.weather {
+    display: flex;
+}
+
+.weatherSegment {
+    flex-direction: column;
+    margin: 30px;
+}
+
+#nameOfCityEntered {
+    background-color: yellow;
+    text-align: center;
+}
