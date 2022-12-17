@@ -1,3 +1,7 @@
+* {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
 .weather {
     display: flex;
 }
@@ -10,4 +14,15 @@
 #nameOfCityEntered {
     background-color: yellow;
     text-align: center;
+}
+
+#mainBanner {
+    background-image: linear-gradient(to right, blue , cyan);
+    color: aliceblue;
+    text-align: center;
+}
+
+#FiveDayForecast {
+    text-align: center;
+    
 }
