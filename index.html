@@ -10,34 +10,41 @@
     </head>
 
     <body>
-        <h1 id="mainBanner">Weather Dashboard</h1>
+
+        <header>
+            <h1 id="mainBanner">Weather Dashboard</h1>
+        </header>
         
-        <h2>Enter City Name</h2>
-        <input type="text" placeholder="enter name of city" autofocus="true" class="form-input" id="cityName"/>
-        <button type="submit" class="btn" id="searchCityButton">Search</button>
-        
-        <div>
-            <h3>Search History:</h3>
-            <ul id="searchHistory"></ul>
-        </div>
-
-        <h3 id="nameOfCityEntered"></h1>
-
-
-        <h3 id="FiveDayForecast"></h3>
-
-        <div class="weather">        
-            <div class="weatherSegment" id="day0"></div>
-
-            <div class="weatherSegment" id="day1"></div>
-
-            <div class="weatherSegment" id="day2"></div>
+        <nav>
+            <h2>Enter City Name</h2>
+            <input type="text" placeholder="enter name of city" autofocus="true" class="form-input" id="cityName"/>
+            <button type="submit" class="btn" id="searchCityButton">Search</button>
             
-            <div class="weatherSegment" id="day3"></div>
+            <div>
+                <h3>Search History:</h3>
+                <ul id="searchHistory"></ul>
+            </div>
+        </nav>
 
-            <div class="weatherSegment" id="day4"></div>
+        <section id="information">
+            <h3 id="nameOfCityEntered"></h1>
 
-        </div> <!--weather-->
+
+                <h3 id="FiveDayForecast"></h3>
+        
+                <div class="weather">        
+                    <div class="weatherSegment" id="day0"></div>
+        
+                    <div class="weatherSegment" id="day1"></div>
+        
+                    <div class="weatherSegment" id="day2"></div>
+                    
+                    <div class="weatherSegment" id="day3"></div>
+        
+                    <div class="weatherSegment" id="day4"></div>
+        
+                </div> <!--weather-->
+        </section>
 
 
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
