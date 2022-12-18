@@ -4,20 +4,32 @@ var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || []; //d
 var lat;
 var lon;
 
-//create search history element
-for (i = (searchHistory.length - 5); i < searchHistory.length; i++) {
-    var searchHistoryElement = document.createElement("li");
+//create search history element (HOW DO YOU GET THIS TO UPDATE IN REALTIME THOUGH)
+for (i = (searchHistory.length - 5); i < searchHistory.length; i++) {    
     var searchHistoryBlock = document.getElementById('searchHistory');
+    var searchHistoryElement = document.createElement("p");
+    searchHistoryElement.setAttribute("class", "searchHistoryElement")
     searchHistoryElement.textContent = searchHistory[i];
     searchHistoryBlock.appendChild(searchHistoryElement);
 }
 
+//This is how you can click on an element in search history and it will show the weather for that city
+$(".searchHistoryElement").on("click", function () {
+    $("#cityName").val($(this).text());
+    console.log("this works");
+    $("#searchCityButton").click();
+})
 
+
+//This is the bulk of this code for actually showing the weather
 $('#searchCityButton').on('click', function () {
     $(".weatherSegment").empty(); //clears past weather segment
     $("#nameOfCityEntered").empty(); //clears the title of the city from the previous search
 
     var cityName = $('#cityName').val();
+    $("#information").css("background-color", "azure");
+
+
 
     //NEED TO CONSIDER WHAT HAPPENS WHEN THERE IS A CITY WITH NO RESULTS
 
@@ -34,8 +46,6 @@ $('#searchCityButton').on('click', function () {
         var openWeatherURL = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=dcf204ce377ddb8eb2328c6723f67b46'; //NEED TO SOMEHOW ADD LAT AND LON IN HERE
 
         var openWeatherCurrentURL = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=dcf204ce377ddb8eb2328c6723f67b46';
-
-        
         
         $.ajax({
             url: openWeatherURL,
@@ -110,10 +120,6 @@ $('#searchCityButton').on('click', function () {
             //display humidity
             humidity = response.main.humidity;
             $(`<p>Humidity is ${humidity}%</p>`).appendTo(currentDayId);
-
-            $(".weatherSegment").css("border", "5px solid black");
-            $(".weatherSegment").css("padding", "10px");
         });
     });
 });
-

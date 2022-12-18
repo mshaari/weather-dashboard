@@ -2,6 +2,10 @@
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
+html {
+    background-color: rgb(58, 165, 165);
+}
+
 .weather {
     display: flex;
 }
@@ -10,6 +14,7 @@
     flex-direction: column;
     margin: 30px;
     text-align: center;
+    background-color: grey;
 }
 
 #nameOfCityEntered {
@@ -18,7 +23,6 @@
 }
 
 #mainBanner {
-    background-image: linear-gradient(to right, blue , cyan);
     color: aliceblue;
     text-align: center;
 }
@@ -35,9 +39,10 @@ main {
 main nav {
     float: left;
     width: 20%;
-    background-image: linear-gradient(to bottom, blue, cyan);
     margin: 2px;
     color: white;
+    background-color: deepskyblue;
+    text-align: center;
 }
 
 main section {
@@ -46,6 +51,14 @@ main section {
     margin: 2px;
 }
 
-#searchHistory {
-    /* list-style-type: none; */
+#searchCityButton {
+    border-radius: 8px;
+    margin: 5px;
+    width: 70%;
+}
+
+#cityName {
+    width: 90%;
+    border-radius: 8px;
+    text-align: center;
 }
