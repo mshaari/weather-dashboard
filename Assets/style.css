@@ -4,6 +4,8 @@
 
 html {
     background-color: rgb(58, 165, 165);
+    background-image: url(https://media1.giphy.com/media/PIh4laWJlz9bq/giphy.gif);
+    background-size: cover;
 }
 
 .weather {

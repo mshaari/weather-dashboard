@@ -4,6 +4,7 @@ var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || []; //d
 var lat;
 var lon;
 
+
 //create search history element (HOW DO YOU GET THIS TO UPDATE IN REALTIME THOUGH)
 for (i = (searchHistory.length - 5); i < searchHistory.length; i++) {    
     var searchHistoryBlock = document.getElementById('searchHistory');
@@ -12,6 +13,10 @@ for (i = (searchHistory.length - 5); i < searchHistory.length; i++) {
     searchHistoryElement.textContent = searchHistory[i];
     searchHistoryBlock.appendChild(searchHistoryElement);
 }
+
+$("#mainBanner").on("click", function () {
+    location.reload();
+})
 
 //This is how you can click on an element in search history and it will show the weather for that city
 $(".searchHistoryElement").on("click", function () {
@@ -31,12 +36,12 @@ $('#searchCityButton').on('click', function () {
 
     if (cityName==="") {
         window.alert("Invalid input");
-        return;
+        location.reload();
     }
 
     //NEED TO CONSIDER WHAT HAPPENS WHEN THERE IS A CITY WITH NO RESULTS
 
-    var geocodingURL = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=5&appid=dcf204ce377ddb8eb2328c6723f67b46';
+    var geocodingURL = 'https://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=5&appid=dcf204ce377ddb8eb2328c6723f67b46';
 
     $.ajax({ //this segment is for getting lat/lon of inputted city
         url: geocodingURL,
@@ -81,7 +86,7 @@ $('#searchCityButton').on('click', function () {
 
                 //display weather icon
                 weatherIcon = response.list[y].weather[0].icon;
-                weatherIconURL = 'http://openweathermap.org/img/wn/' + weatherIcon + '@2x.png';
+                weatherIconURL = 'https://openweathermap.org/img/wn/' + weatherIcon + '@2x.png';
                 $(`<img src='${weatherIconURL}'>`).appendTo(dayID);
 
                 //display temp
@@ -115,7 +120,7 @@ $('#searchCityButton').on('click', function () {
 
             //display weather icon
             weatherIcon = response.weather[0].icon;
-            weatherIconURL = 'http://openweathermap.org/img/wn/' + weatherIcon + '@2x.png';
+            weatherIconURL = 'https://openweathermap.org/img/wn/' + weatherIcon + '@2x.png';
             $(`<img src='${weatherIconURL}'>`).appendTo(currentDayId);
 
             //display temp
