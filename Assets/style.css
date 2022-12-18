@@ -9,6 +9,7 @@
 .weatherSegment {
     flex-direction: column;
     margin: 30px;
+    text-align: center;
 }
 
 #nameOfCityEntered {
@@ -24,5 +25,27 @@
 
 #FiveDayForecast {
     text-align: center;
-    
+
+}
+
+main {
+    display: flex;
+}
+
+main nav {
+    float: left;
+    width: 20%;
+    background-image: linear-gradient(to bottom, blue, cyan);
+    margin: 2px;
+    color: white;
+}
+
+main section {
+    float: right;
+    width: 80%;
+    margin: 2px;
+}
+
+#searchHistory {
+    /* list-style-type: none; */
 }

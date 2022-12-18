@@ -14,23 +14,25 @@
         <header>
             <h1 id="mainBanner">Weather Dashboard</h1>
         </header>
-        
-        <nav>
-            <h2>Enter City Name</h2>
-            <input type="text" placeholder="enter name of city" autofocus="true" class="form-input" id="cityName"/>
-            <button type="submit" class="btn" id="searchCityButton">Search</button>
-            
-            <div>
-                <h3>Search History:</h3>
-                <ul id="searchHistory"></ul>
-            </div>
-        </nav>
 
-        <section id="information">
-            <h3 id="nameOfCityEntered"></h1>
-
-
-                <h3 id="FiveDayForecast"></h3>
+        <main>
+            <nav>
+                <h2>Enter City Name</h2>
+                <input type="text" placeholder="enter name of city" autofocus="true" class="form-input" id="cityName"/>
+                <button type="submit" class="btn" id="searchCityButton">Search</button>
+                
+                <div>
+                    <h3>Search History:</h3>
+                    <ul id="searchHistory"></ul>
+                </div>
+            </nav>
+    
+            <section id="information">
+                <h3 id="nameOfCityEntered"></h1>
+    
+                <div class="weatherSegment" id="currentWeather"></div>
+    
+                <h2 id="FiveDayForecast"></h2>
         
                 <div class="weather">        
                     <div class="weatherSegment" id="day0"></div>
@@ -44,10 +46,11 @@
                     <div class="weatherSegment" id="day4"></div>
         
                 </div> <!--weather-->
-        </section>
-
+            </section>    
+        </main>
 
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js" integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
         <script src="Assets/script.js"></script>
     </body>
 
