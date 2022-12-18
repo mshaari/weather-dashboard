@@ -29,20 +29,29 @@ $('#searchCityButton').on('click', function () {
     var cityName = $('#cityName').val();
     $("#information").css("background-color", "azure");
 
-
+    if (cityName==="") {
+        window.alert("Invalid input");
+        return;
+    }
 
     //NEED TO CONSIDER WHAT HAPPENS WHEN THERE IS A CITY WITH NO RESULTS
 
     var geocodingURL = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=5&appid=dcf204ce377ddb8eb2328c6723f67b46';
 
-    $.ajax({
+    $.ajax({ //this segment is for getting lat/lon of inputted city
         url: geocodingURL,
         method: 'GET',
     }).then(function (response) {
         console.log(response);
-        lat = response[0].lat;
-        lon = response[0].lon;
-    }).then(function () {
+        
+        if (response.length === 0) {
+            window.alert("Not a valid city. Try again.");
+            location.reload();
+        } else {
+            lat = response[0].lat;
+            lon = response[0].lon;
+        }
+    }).then(function () { //this handles that lat/long to get weather 
         var openWeatherURL = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=dcf204ce377ddb8eb2328c6723f67b46'; //NEED TO SOMEHOW ADD LAT AND LON IN HERE
 
         var openWeatherCurrentURL = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=dcf204ce377ddb8eb2328c6723f67b46';
