@@ -1,12 +1,14 @@
-var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || []; //declare this outside of a function so that it's a universal variable
+//Declare an array searchHistory that is either a pre-exising array from local storage (using JSON.parse) or an empty array if the local storage for "searchHistory" is empty
+var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 
-//declare lat/lon variables for local use
+//Declare a lat and lon variable to store the latitude and longitude that matches the city the user inputs (universal variable)
 var lat;
 var lon;
 
 
-//create search history element (HOW DO YOU GET THIS TO UPDATE IN REALTIME THOUGH)
-for (i = (searchHistory.length - 5); i < searchHistory.length; i++) {    
+//A function to create the search history that executes 5 times, starting with the 5th most recent search input to the most recent search input. It takes the value 
+//(HOW DO YOU GET THIS TO UPDATE IN REALTIME THOUGH)
+for (i = (searchHistory.length - 5); i < searchHistory.length; i++) {
     var searchHistoryBlock = document.getElementById('searchHistory');
     var searchHistoryElement = document.createElement("p");
     searchHistoryElement.setAttribute("class", "searchHistoryElement")
@@ -14,41 +16,47 @@ for (i = (searchHistory.length - 5); i < searchHistory.length; i++) {
     searchHistoryBlock.appendChild(searchHistoryElement);
 }
 
+//If they click on the main banner that says Weather Dashboard, it will reload the page
 $("#mainBanner").on("click", function () {
     location.reload();
 })
 
-//This is how you can click on an element in search history and it will show the weather for that city
+//This is how you can click on an element in search history and it will show the weather for that city. It takes the value of the element they clicked, inserts it into the search box, and clicks search with that value
 $(".searchHistoryElement").on("click", function () {
     $("#cityName").val($(this).text());
-    console.log("this works");
     $("#searchCityButton").click();
 })
 
-
 //This is the bulk of this code for actually showing the weather
 $('#searchCityButton').on('click', function () {
-    $(".weatherSegment").empty(); //clears past weather segment
-    $("#nameOfCityEntered").empty(); //clears the title of the city from the previous search
+    //Clears past weather segment if anything was there
+    $(".weatherSegment").empty();
 
+    //Clears the title of the city from the previous search
+    $("#nameOfCityEntered").empty();
+
+    //Set variable cityName equal to the value of element with id="cityName" (what the user typed in as the city name)
     var cityName = $('#cityName').val();
+
+    //Sets the div with id="information" to have background-color of azure 
     $("#information").css("background-color", "azure");
 
-    if (cityName==="") {
+    //If they user hits search without any city entered, they're alerted that they have an invalid input and the page is reloaded
+    if (cityName === "") {
         window.alert("Invalid input");
         location.reload();
     }
 
-    //NEED TO CONSIDER WHAT HAPPENS WHEN THERE IS A CITY WITH NO RESULTS
-
+    //Sets geocodingURL equal to the API URL specific to the city the user entered
     var geocodingURL = 'https://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=5&appid=dcf204ce377ddb8eb2328c6723f67b46';
 
-    $.ajax({ //this segment is for getting lat/lon of inputted city
+    $.ajax({ //This segment is for getting lat/lon of entered city
         url: geocodingURL,
         method: 'GET',
     }).then(function (response) {
         console.log(response);
-        
+
+        //If the user entered a city with no matches, it alerts that they entered an invalid city and reloads the page. Otherwise, it stores the latitude and longitude of that city in the lat/lon variables
         if (response.length === 0) {
             window.alert("Not a valid city. Try again.");
             location.reload();
@@ -56,82 +64,95 @@ $('#searchCityButton').on('click', function () {
             lat = response[0].lat;
             lon = response[0].lon;
         }
-    }).then(function () { //this handles that lat/long to get weather 
-        var openWeatherURL = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=dcf204ce377ddb8eb2328c6723f67b46'; //NEED TO SOMEHOW ADD LAT AND LON IN HERE
+    }).then(function () { //This segment handles using that lat/long to get the weather 
+        //Sets openWeatherURL equal to the API URL specific to the lat/lon for the city the user entered (used to get 5 day forecast)
+        var openWeatherURL = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=dcf204ce377ddb8eb2328c6723f67b46';
 
+        //Sets openWeatherCurrentURL equal to the API URL specific to the lat/lon for the city the user entered (used to get current weather)
         var openWeatherCurrentURL = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=dcf204ce377ddb8eb2328c6723f67b46';
-        
-        $.ajax({
+
+        $.ajax({ //This segment is for getting the 5 day forecast
             url: openWeatherURL,
             method: 'GET',
         }).then(function (response) {
             console.log(response);
-            var cityFromCoordinates = response.city.name;
-            $(`<h1>Weather for ${cityFromCoordinates}</h2>`).appendTo('#nameOfCityEntered'); //sometimes shows no result
 
+            //Set cityFromCoordinates equal to the city name that matches the lat/lon from the user's input (the closest match)
+            var cityFromCoordinates = response.city.name;
+
+            //Creates h1 banner that says "Weather for <cityFromCoordinates>" and appends it to the element with id="nameOfCityEntered"
+            $(`<h1>Weather for ${cityFromCoordinates}</h1>`).appendTo('#nameOfCityEntered');
+
+            //Pushes that city to the searchHistory array
             searchHistory.push(cityFromCoordinates);
+
+            //Sends that updated array to local storage for "searchHistory" using JSON.stringify
             localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
 
+            //For loop that iterates 5 times to display the weather forecast for the next 5 days
             for (var i = 0; i < 5; i++) {
-                //use this function to set variable dayID = to the ID of the segment for that particular day
+                //This sets a variable dayID = to the ID of the segment for that particular day (since the ID for each div for each day's weather is "day0", "day1", ... we can just set it to "day" + [i] if i starts at 0 and ends at 4)
                 var dayID = document.getElementById("day" + [i]);
 
-                var y = (3 + 8*i); //this is how we access the yth object element that corresponds for noon for each day
+                //Sets some other variable y = (3 + 8*i) since each day has 8 different times where the weather is recorded so by adding 8 a certain number of times (either 0, 1, 2, 3, or 4 times depending on what i is) you end up at the same time interval just on different days. This y is used to access the yth element of the list of weather reports
+                var y = (3 + 8 * i);
 
-                var dateHeader = document.createElement("h2");
-                dateHeader.textContent = response.list[y].dt_txt;
-                dayID.appendChild(dateHeader);
+                //Sets h2 element with text equal to response.list[y].dt_txt which is the date of the yth element's weather and appends it to the weather div with dayID (this is what displays the date and time in each weather block) 
+                $(`<h2>${response.list[y].dt_txt}</h2>`).appendTo(dayID);
 
+                //This sets the element with id="FiveDayForecast" to have text that says "5 Day Forecast"
                 $("#FiveDayForecast").text("5 Day Forecast");
 
-                //display weather icon
+                //Gets the weather icon id, sets the weatherIconURL to use that id to get the URL to that icon, and then creates img element with that URL (which is the weather icon)
                 weatherIcon = response.list[y].weather[0].icon;
                 weatherIconURL = 'https://openweathermap.org/img/wn/' + weatherIcon + '@2x.png';
                 $(`<img src='${weatherIconURL}'>`).appendTo(dayID);
 
-                //display temp
+                //Display temperature
                 temp = response.list[y].main.temp;
                 $(`<p>Temperature is ${temp} \u00B0F</p>`).appendTo(dayID);
 
-                //display wind
+                //Display wind
                 wind = response.list[y].wind.speed;
                 $(`<p>Wind is ${wind} mph</p>`).appendTo(dayID);
 
-                //display humidity
+                //Display humidity
                 humidity = response.list[y].main.humidity;
                 $(`<p>Humidity is ${humidity}%</p>`).appendTo(dayID);
 
+                //Add border and padding around elements with class="weatherSegment"
                 $(".weatherSegment").css("border", "5px solid black");
                 $(".weatherSegment").css("padding", "10px");
             };
         });
 
-        $.ajax({
+
+        $.ajax({ //This segment is for getting the current weather conditions
             url: openWeatherCurrentURL,
             method: 'GET',
-        }).then(function (response) {
+        }).then(function (response) { //This displays current conditions
             console.log(response);
-            
+
             var currentDayId = document.getElementById("currentWeather");
 
-            var dateHeader = document.createElement("h2");
-            dateHeader.textContent = "Current Weather";
-            currentDayId.appendChild(dateHeader);
+            //Creates h2 element that says "Current Weather" and appends it to #currentWeather element
+            $('<h2>Current Weather</h2>').appendTo("#currentWeather");
 
-            //display weather icon
+
+            //Gets the weather icon id, sets the weatherIconURL to use that id to get the URL to that icon, and then creates img element with that URL (which is the weather icon)
             weatherIcon = response.weather[0].icon;
             weatherIconURL = 'https://openweathermap.org/img/wn/' + weatherIcon + '@2x.png';
             $(`<img src='${weatherIconURL}'>`).appendTo(currentDayId);
 
-            //display temp
+            //Display temp
             temp = response.main.temp;
             $(`<p>Temperature is ${temp} \u00B0F</p>`).appendTo(currentDayId);
 
-            //display wind
+            //Display wind
             wind = response.wind.speed;
             $(`<p>Wind is ${wind} mph</p>`).appendTo(currentDayId);
 
-            //display humidity
+            //Display humidity
             humidity = response.main.humidity;
             $(`<p>Humidity is ${humidity}%</p>`).appendTo(currentDayId);
         });
