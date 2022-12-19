@@ -4,7 +4,7 @@
 
 Weather Dashboard allows users to type in the name of a city and have the current weather and 5 day forecast for that city shown, including the current weather conditions, temperature, wind, and humidity. 
 
-On the left-hand column, there is a search history that shows that 5 most recently searched cities since the page was last refreshed in order from oldest to newest recent search. To update this list to reflect searches in your current session, refresh the page. You can click on a city in the list and it will show the weather for that city. 
+On the left-hand column, there is a search history that shows that 5 most recently searched cities. You can click on a city in the list and it will show the weather for that city. 
 
 ## Screenshot
 

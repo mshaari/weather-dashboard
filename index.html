@@ -17,6 +17,7 @@
 
     <main>
         <nav>
+            <!--This div is for letting the user input the city name-->
             <div>
                 <h2>Enter City Name</h2>
                 <input type="text" placeholder="enter name of city" autofocus="true" class="form-input" id="cityName" />
@@ -24,38 +25,43 @@
                 <button type="submit" class="btn" id="searchCityButton">Search</button>
             </div>
 
+            <!--This div is for displaying the search history-->
             <div>
                 <h3>Search History:</h3>
                 <div id="searchHistory"></div>
             </div>
         </nav>
 
+        <!--This div is what holds all of the information (the weather)-->
         <section id="information">
-            <h3 id="nameOfCityEntered">
-                </h1>
+            <!--The name of the city intered is shown here-->
+            <h3 id="nameOfCityEntered"></h3>
 
-                <div class="weatherSegment" id="currentWeather"></div>
+            <div class="weatherSegment" id="currentWeather"></div>
 
-                <h2 id="FiveDayForecast"></h2>
+            <br>
 
-                <div class="weather">
-                    <div class="weatherSegment" id="day0"></div>
+            <!--The text "5 Day Forecast" will be shown here using JS-->
+            <h2 id="FiveDayForecast"></h2>
 
-                    <div class="weatherSegment" id="day1"></div>
+            <!--Shows the forecast (each div within this corresponds to a day in the future (day0 is tomorrow and day4 is 5 days from now))-->
+            <div id="weather">
+                <div class="weatherSegment" id="day0"></div>
 
-                    <div class="weatherSegment" id="day2"></div>
+                <div class="weatherSegment" id="day1"></div>
 
-                    <div class="weatherSegment" id="day3"></div>
+                <div class="weatherSegment" id="day2"></div>
 
-                    <div class="weatherSegment" id="day4"></div>
+                <div class="weatherSegment" id="day3"></div>
 
-                </div> <!--weather-->
+                <div class="weatherSegment" id="day4"></div>
+            </div> 
         </section>
     </main>
 
+    <!--Links to jQuery, jQuery UI, and JS-->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
-        integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="Assets/script.js"></script>
 </body>
 

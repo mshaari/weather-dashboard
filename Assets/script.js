@@ -5,26 +5,25 @@ var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 var lat;
 var lon;
 
+//A function to create the search history that executes 5 times starting at the last index (most recent search)
+function createSearchHistory() {
+    $("#searchHistory").empty();
+    for (i = (searchHistory.length - 1); i > (searchHistory.length - 6); i--) {
+        $(`<p class="searchHistoryElement"> ${searchHistory[i]} </p>`).appendTo("#searchHistory");
+    }
 
-//A function to create the search history that executes 5 times, starting with the 5th most recent search input to the most recent search input. It takes the value 
-//(HOW DO YOU GET THIS TO UPDATE IN REALTIME THOUGH)
-for (i = (searchHistory.length - 5); i < searchHistory.length; i++) {
-    var searchHistoryBlock = document.getElementById('searchHistory');
-    var searchHistoryElement = document.createElement("p");
-    searchHistoryElement.setAttribute("class", "searchHistoryElement")
-    searchHistoryElement.textContent = searchHistory[i];
-    searchHistoryBlock.appendChild(searchHistoryElement);
+    //This is how you can click on an element in search history and it will show the weather for that city. It takes the value of the element they clicked, inserts it into the search box, and clicks search with that value
+    $(".searchHistoryElement").on("click", function () {
+        $("#cityName").val($(this).text());
+        $("#searchCityButton").click();
+    })
 }
+
+createSearchHistory();
 
 //If they click on the main banner that says Weather Dashboard, it will reload the page
 $("#mainBanner").on("click", function () {
     location.reload();
-})
-
-//This is how you can click on an element in search history and it will show the weather for that city. It takes the value of the element they clicked, inserts it into the search box, and clicks search with that value
-$(".searchHistoryElement").on("click", function () {
-    $("#cityName").val($(this).text());
-    $("#searchCityButton").click();
 })
 
 //This is the bulk of this code for actually showing the weather
@@ -43,7 +42,7 @@ $('#searchCityButton').on('click', function () {
 
     //If they user hits search without any city entered, they're alerted that they have an invalid input and the page is reloaded
     if (cityName === "") {
-        window.alert("Invalid input");
+        window.alert("Invalid input . Please enter a valid city name after clicking OK.");
         location.reload();
     }
 
@@ -58,7 +57,7 @@ $('#searchCityButton').on('click', function () {
 
         //If the user entered a city with no matches, it alerts that they entered an invalid city and reloads the page. Otherwise, it stores the latitude and longitude of that city in the lat/lon variables
         if (response.length === 0) {
-            window.alert("Not a valid city. Try again.");
+            window.alert("Invalid input . Please enter a valid city name after clicking OK.");
             location.reload();
         } else {
             lat = response[0].lat;
@@ -89,6 +88,9 @@ $('#searchCityButton').on('click', function () {
             //Sends that updated array to local storage for "searchHistory" using JSON.stringify
             localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
 
+            //Update search history with new city
+            createSearchHistory();
+
             //For loop that iterates 5 times to display the weather forecast for the next 5 days
             for (var i = 0; i < 5; i++) {
                 //This sets a variable dayID = to the ID of the segment for that particular day (since the ID for each div for each day's weather is "day0", "day1", ... we can just set it to "day" + [i] if i starts at 0 and ends at 4)
@@ -98,7 +100,9 @@ $('#searchCityButton').on('click', function () {
                 var y = (3 + 8 * i);
 
                 //Sets h2 element with text equal to response.list[y].dt_txt which is the date of the yth element's weather and appends it to the weather div with dayID (this is what displays the date and time in each weather block) 
-                $(`<h2>${response.list[y].dt_txt}</h2>`).appendTo(dayID);
+                var date= new Date(response.list[y].dt * 1000).toLocaleDateString();
+
+                $(`<h3>${date}</h3>`).appendTo(dayID);
 
                 //This sets the element with id="FiveDayForecast" to have text that says "5 Day Forecast"
                 $("#FiveDayForecast").text("5 Day Forecast");
@@ -121,8 +125,8 @@ $('#searchCityButton').on('click', function () {
                 $(`<p>Humidity is ${humidity}%</p>`).appendTo(dayID);
 
                 //Add border and padding around elements with class="weatherSegment"
-                $(".weatherSegment").css("border", "5px solid black");
-                $(".weatherSegment").css("padding", "10px");
+                $(".weatherSegment").css("border", "3px solid black");
+                $(".weatherSegment").css("padding", "5px");
             };
         });
 
@@ -133,28 +137,25 @@ $('#searchCityButton').on('click', function () {
         }).then(function (response) { //This displays current conditions
             console.log(response);
 
-            var currentDayId = document.getElementById("currentWeather");
-
             //Creates h2 element that says "Current Weather" and appends it to #currentWeather element
             $('<h2>Current Weather</h2>').appendTo("#currentWeather");
-
 
             //Gets the weather icon id, sets the weatherIconURL to use that id to get the URL to that icon, and then creates img element with that URL (which is the weather icon)
             weatherIcon = response.weather[0].icon;
             weatherIconURL = 'https://openweathermap.org/img/wn/' + weatherIcon + '@2x.png';
-            $(`<img src='${weatherIconURL}'>`).appendTo(currentDayId);
+            $(`<img src='${weatherIconURL}'>`).appendTo("#currentWeather");
 
             //Display temp
             temp = response.main.temp;
-            $(`<p>Temperature is ${temp} \u00B0F</p>`).appendTo(currentDayId);
+            $(`<p>Temperature is ${temp} \u00B0F</p>`).appendTo("#currentWeather");
 
             //Display wind
             wind = response.wind.speed;
-            $(`<p>Wind is ${wind} mph</p>`).appendTo(currentDayId);
+            $(`<p>Wind is ${wind} mph</p>`).appendTo("#currentWeather");
 
             //Display humidity
             humidity = response.main.humidity;
-            $(`<p>Humidity is ${humidity}%</p>`).appendTo(currentDayId);
+            $(`<p>Humidity is ${humidity}%</p>`).appendTo("#currentWeather");
         });
     });
 });

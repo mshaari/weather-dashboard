@@ -8,13 +8,15 @@ html {
     background-size: cover;
 }
 
-.weather {
+#weather {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .weatherSegment {
     flex-direction: column;
-    margin: 30px;
+    margin: 20px;
     text-align: center;
     background-color: grey;
 }
@@ -40,7 +42,7 @@ main {
 
 main nav {
     float: left;
-    width: 20%;
+    width: 15%;
     margin: 2px;
     color: white;
     background-color: deepskyblue;
@@ -49,7 +51,7 @@ main nav {
 
 main section {
     float: right;
-    width: 80%;
+    width: 85%;
     margin: 2px;
 }
 
